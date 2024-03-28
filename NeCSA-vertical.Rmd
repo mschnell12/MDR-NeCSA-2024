@@ -15,9 +15,29 @@ library(readxl)
 ```
 
 ```{r load-data}
-vertical2023 <- read_excel("data/2023_vertical_MDR_NeCSA.xlsx")
+vertical2023_1 <- read_excel("data/2023_vertical_MDR_NeCSA.xlsx", range = "F6:H147")
+vertical2023_2 <- read_excel("data/2023_vertical_MDR_NeCSA.xlsx", range = "J6:L202")
+vertical2023_3 <- read_excel("data/2023_vertical_MDR_NeCSA.xlsx", range = "N6:P161")
 
+```
 
-# once I figure out how to load the data, need to load 3 times, one for each column, and then join (?) (look at what I started doing for horizontal 2018 data)
+```{r tidy-data}
+vertical2023_1 <- vertical2023_1 %>%
+  mutate(transect = "1")
+
+vertical2023_2 <- vertical2023_2 %>%
+  mutate(transect = "2")
+
+vertical2023_3 <- vertical2023_3 %>%
+  mutate(transect = "3")
+
+vertical2023 <- full_join(vertical2023_1, vertical2023_2) %>% 
+  full_join(vertical2023_3) %>% 
+  rename(species = "Species Code",
+         start = "Start distance from 0 (m)",
+         end = "End distance (m)") %>%
+  mutate(transect = as.numeric(transect)) %>%
+  mutate(distance = end - start) %>%
+  relocate(transect, .before = species)
 
 ```
