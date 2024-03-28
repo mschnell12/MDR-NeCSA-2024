@@ -1,0 +1,23 @@
+---
+title: "NeCSA Vertical"
+author: "Marina Schnell"
+date: "2024-03-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load-packages}
+library(tidyverse)
+library(readxl)
+```
+
+```{r load-data}
+vertical2023 <- read_excel("data/2023_vertical_MDR_NeCSA.xlsx")
+
+
+# once I figure out how to load the data, need to load 3 times, one for each column, and then join (?) (look at what I started doing for horizontal 2018 data)
+
+```
