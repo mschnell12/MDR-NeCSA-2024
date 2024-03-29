@@ -15,13 +15,92 @@ library(readxl)
 ```
 
 ```{r load-data}
+vertical2021_1A <- read_excel("data/2021_vertical_MDR_NeCSA.xlsx", range = "F6:H50",
+                              sheet = "Transect 1")
+vertical2021_1B <- read_excel("data/2021_vertical_MDR_NeCSA.xlsx", range = "J6:L50",
+                              sheet = "Transect 1")
+vertical2021_1C <- read_excel("data/2021_vertical_MDR_NeCSA.xlsx", range = "N6:P47",
+                              sheet = "Transect 1")
+
+vertical2021_2A <- read_excel("data/2021_vertical_MDR_NeCSA.xlsx", range = "F6:H50",
+                              sheet = "Transect 2")
+vertical2021_2B <- read_excel("data/2021_vertical_MDR_NeCSA.xlsx", range = "J6:L240",
+                              sheet = "Transect 2")
+vertical2021_2C <- read_excel("data/2021_vertical_MDR_NeCSA.xlsx", range = "N6:P247",
+                              sheet = "Transect 2")
+
+vertical2021_3A <- read_excel("data/2021_vertical_MDR_NeCSA.xlsx", range = "F6:H50",
+                              sheet = "Transect 3")
+vertical2021_3B <- read_excel("data/2021_vertical_MDR_NeCSA.xlsx", range = "J6:L240",
+                              sheet = "Transect 3")
+vertical2021_3C <- read_excel("data/2021_vertical_MDR_NeCSA.xlsx", range = "N6:P247",
+                              sheet = "Transect 3")
+
+
+vertical2022_1 <- read_excel("data/2022_vertical_MDR_NeCSA.xlsx", range = "F6:H150")
+vertical2022_2 <- read_excel("data/2022_vertical_MDR_NeCSA.xlsx", range = "J6:L240")
+vertical2022_3 <- read_excel("data/2022_vertical_MDR_NeCSA.xlsx", range = "N6:P247")
+
 vertical2023_1 <- read_excel("data/2023_vertical_MDR_NeCSA.xlsx", range = "F6:H147")
 vertical2023_2 <- read_excel("data/2023_vertical_MDR_NeCSA.xlsx", range = "J6:L202")
 vertical2023_3 <- read_excel("data/2023_vertical_MDR_NeCSA.xlsx", range = "N6:P161")
 
 ```
 
-```{r tidy-data}
+```{r tidy-data-2021}
+vertical2021_1 <- full_join(vertical2021_1A, vertical2021_1B) %>%
+  full_join(vertical2021_1C) %>%
+  mutate(transect = "1")
+
+vertical2021_2 <- full_join(vertical2021_2A, vertical2021_2B) %>%
+  full_join(vertical2021_2C) %>%
+  mutate(transect = "2")
+
+vertical2021_3 <- full_join(vertical2021_3A, vertical2021_3B) %>%
+  full_join(vertical2021_3C) %>%
+  mutate(transect = "3")
+
+vertical2021 <- full_join(vertical2021_1, vertical2021_2) %>% 
+  full_join(vertical2021_3) %>% 
+  rename(species = "Species Code",
+         start = "Start distance from 0 (m)",
+         end = "End distance (m)") %>%
+  mutate(transect = as.numeric(transect)) %>%
+  mutate(distance = end - start) %>%
+  relocate(transect, .before = species) %>%
+  mutate(species = case_when(species == "FD" ~ "Fspp",
+                             species == "FV" ~ "Fspp",
+                             species == "FS" ~ "Fspp",
+                             TRUE ~ species))
+
+```
+
+```{r tidy-data-2022}
+vertical2022_1 <- vertical2022_1 %>%
+  mutate(transect = "1")
+
+vertical2022_2 <- vertical2022_2 %>%
+  mutate(transect = "2")
+
+vertical2022_3 <- vertical2022_3 %>%
+  mutate(transect = "3")
+
+vertical2022 <- full_join(vertical2022_1, vertical2022_2) %>% 
+  full_join(vertical2022_3) %>% 
+  rename(species = "Species Code",
+         start = "Start distance from 0 (m)",
+         end = "End distance (m)") %>%
+  mutate(transect = as.numeric(transect)) %>%
+  mutate(distance = end - start) %>%
+  relocate(transect, .before = species) %>%
+  mutate(species = case_when(species == "FD" ~ "Fspp",
+                             species == "FV" ~ "Fspp",
+                             species == "FS" ~ "Fspp",
+                             TRUE ~ species))
+
+```
+
+```{r tidy-data-2023}
 vertical2023_1 <- vertical2023_1 %>%
   mutate(transect = "1")
 
@@ -38,6 +117,10 @@ vertical2023 <- full_join(vertical2023_1, vertical2023_2) %>%
          end = "End distance (m)") %>%
   mutate(transect = as.numeric(transect)) %>%
   mutate(distance = end - start) %>%
-  relocate(transect, .before = species)
+  relocate(transect, .before = species) %>%
+  mutate(species = case_when(species == "FD" ~ "Fspp",
+                             species == "FV" ~ "Fspp",
+                             species == "FS" ~ "Fspp",
+                             TRUE ~ species))
 
 ```
