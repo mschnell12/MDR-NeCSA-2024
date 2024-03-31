@@ -1,0 +1,42 @@
+---
+title: "NeCSA Vertical (Graphs)"
+author: "Marina Schnell"
+date: "2024-03-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load-packages}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r load-data}
+vertical_all <- read.csv("data/vertical_all.csv")
+```
+
+```{r sum-cover-graph}
+vertical_all %>%
+  filter(year %in% c("2021", "2022", "2023")) %>%
+  filter(species %in% c("AN", "VL", "Fspp")) %>%
+  filter(transect == 1) %>%
+  group_by(species, year) %>%
+  summarise(sum_distance = sum(distance)) %>%
+  ggplot(mapping = aes(year, sum_distance, fill = year)) +
+  geom_col() +
+  facet_wrap("species", nrow = 1) +
+  scale_fill_viridis_d() +
+  theme(legend.position="none")
+  
+
+# VL in transect 3 in 2021 is negative... ???
+
+```
+
+```{r percent-cover-graph}
+# figure out how to calculate total length of each transect each year (biggest value of end)
+```

@@ -1,5 +1,5 @@
 ---
-title: "NeCSA Vertical"
+title: "NeCSA Vertical (Tidy Data)"
 author: "Marina Schnell"
 date: "2024-03-28"
 output: html_document
@@ -16,7 +16,7 @@ library(readxl)
 
 ```{r load-data}
 
-# skipped 2017 (location in transect recorded in increments of 10 (cm?) and for T1 and T2 there are blanks next to the location numbers, and in T3 the location is blank for the last of the recorded species)
+# skipped 2017 (location in transect recorded in increments of 10 (cm?), and for T1 and T2 there are blanks next to the location numbers, and in T3 the location is blank for the last of the recorded species)
 
 # skipped 2018 (didn't do transect 1, and there was no ending measurement)
 
@@ -207,7 +207,8 @@ vertical2023 <- full_join(vertical2023_1, vertical2023_2) %>%
 vertical_all <- full_join(vertical2019, vertical2020) %>%
   full_join(vertical2021) %>%
   full_join(vertical2022) %>%
-  full_join(vertical2023)
+  full_join(vertical2023) %>%
+  mutate(year = as.factor(year))
 
 write_csv(vertical_all, "data/vertical_all.csv")
 
