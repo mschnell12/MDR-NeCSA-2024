@@ -1,0 +1,24 @@
+---
+title: "NeCSA Vertical (Graphs)"
+author: "Marina Schnell"
+date: "2024-04-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load-packages}
+library(tidyverse)
+library(dplyr)
+```
+
+```{r load-data}
+vertical_all <- read.csv("data/vertical_all.csv")
+
+expanded_inverts_mdr <- read.csv("data/expanded_inverts_mdr.csv")
+
+expanded_seaweeds_mdr <- read.csv("data/expanded_seaweeds_mdr.csv")
+
+```
