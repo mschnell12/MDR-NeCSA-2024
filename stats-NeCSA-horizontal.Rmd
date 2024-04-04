@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r load-packages}
 library(tidyverse)
 library(dplyr)
+library(dunn.test)
 ```
 
 ```{r load-data}
@@ -20,5 +21,57 @@ vertical_all <- read.csv("data/vertical_all.csv")
 expanded_inverts_mdr <- read.csv("data/expanded_inverts_mdr.csv")
 
 expanded_seaweeds_mdr <- read.csv("data/expanded_seaweeds_mdr.csv")
+
+```
+
+```{r kruskal-wallis-Litt_l}
+
+# is this doing what I think it's doing?
+
+expanded_inverts_mdr %>%
+  filter(invert_species == "Litt_l")%>%
+  select(year, count) %>%
+  kruskal.test()
+
+expanded_inverts_mdr %>%
+  filter(invert_species == "Litt_l")%>%
+  select(year, count) %>%
+  dunn.test()
+
+```
+
+```{r kruskal-wallis-Litt_o}
+
+expanded_inverts_mdr %>%
+  filter(invert_species == "Litt_o")%>%
+  select(year, count) %>%
+  kruskal.test()
+
+```
+
+```{r kruskal-wallis-Litt_s}
+
+expanded_inverts_mdr %>%
+  filter(invert_species == "Litt_s")%>%
+  select(year, count) %>%
+  kruskal.test()
+
+```
+
+```{r kruskal-wallis-Lacu_v}
+
+expanded_inverts_mdr %>%
+  filter(invert_species == "Lacu_v")%>%
+  select(year, count) %>%
+  kruskal.test()
+
+```
+
+```{r kruskal-wallis-Nuce_l}
+
+expanded_inverts_mdr %>%
+  filter(invert_species == "Nuce_l")%>%
+  select(year, count) %>%
+  kruskal.test()
 
 ```
