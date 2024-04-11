@@ -24,54 +24,20 @@ expanded_seaweeds_mdr <- read.csv("data/expanded_seaweeds_mdr.csv")
 
 ```
 
-```{r kruskal-wallis-Litt_l}
+```{r kruskal-wallis-Litt_o}
 
 # is this doing what I think it's doing?
 
 expanded_inverts_mdr %>%
-  filter(invert_species == "Litt_l")%>%
-  select(year, count) %>%
-  kruskal.test()
-
-expanded_inverts_mdr %>%
-  filter(invert_species == "Litt_l")%>%
-  select(year, count) %>%
-  dunn.test()
-
-```
-
-```{r kruskal-wallis-Litt_o}
+  filter(invert_species == "Litt_o")%>%
+  #filter(year %in% c(2022, 2023)) %>%
+  #filter(!is.na(count)) %>%
+  # select(year, count) %>%
+  kruskal.test(count ~ year)
 
 expanded_inverts_mdr %>%
   filter(invert_species == "Litt_o")%>%
   select(year, count) %>%
-  kruskal.test()
-
-```
-
-```{r kruskal-wallis-Litt_s}
-
-expanded_inverts_mdr %>%
-  filter(invert_species == "Litt_s")%>%
-  select(year, count) %>%
-  kruskal.test()
-
-```
-
-```{r kruskal-wallis-Lacu_v}
-
-expanded_inverts_mdr %>%
-  filter(invert_species == "Lacu_v")%>%
-  select(year, count) %>%
-  kruskal.test()
-
-```
-
-```{r kruskal-wallis-Nuce_l}
-
-expanded_inverts_mdr %>%
-  filter(invert_species == "Nuce_l")%>%
-  select(year, count) %>%
-  kruskal.test()
+  dunn.test()
 
 ```
