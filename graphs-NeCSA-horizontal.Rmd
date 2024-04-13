@@ -1,0 +1,93 @@
+---
+title: "NeCSA Horizontal Including 2018 (Graphs)"
+author: "Marina Schnell"
+date: "2024-04-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load-packages}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(ggtext)
+library(scales)
+
+se <- function(x) sd(x)/sqrt(length(x))
+```
+
+```{r load-data}
+
+expanded_seaweeds_mdr_with_2018 <- read.csv("data/expanded_seaweeds_mdr_with_2018.csv")
+
+```
+
+```{r L-mean-seaweed-cover-graph-faceted, fig.height = 4, fig.width = 9}
+
+# include caption that says error bars represent +/- 1 standard error
+
+seaweed_labs <- c("<i>Ascophyllum nodosum</i>",
+                  "<i>Chondrus crispus</i>",
+                  "<i>Corallina officinalis</i>",
+                  "<i>Fucus</i> spp.",
+                  "<i>Mastocarpus stellatus</i>",
+                  "<i>Ulva lactuca</i>")
+
+names(seaweed_labs) <- c("Asco_n",
+                         "Chon_c",
+                         "Cora_o",
+                         "Fucu_spp",
+                         "Mast_s",
+                         "Ulva_l")
+
+expanded_seaweeds_mdr_with_2018 %>%
+  filter(seaweed_simple %in% names(seaweed_labs)) %>%
+  group_by(year, tide_ht, quadrat_m, seaweed_simple) %>%
+  summarise(sum_proportion = sum(proportion_new)) %>%
+  filter(!is.na(quadrat_m)) %>%
+  group_by(year, seaweed_simple) %>%
+  summarise(mean_proportion = mean(sum_proportion),
+            se_proportion = se(sum_proportion)) %>%
+  mutate(ymin_seaweeds = mean_proportion - se_proportion) %>%
+  mutate(ymin_seaweeds = case_when(ymin_seaweeds < 0 ~ 0,
+                          TRUE ~ ymin_seaweeds)) %>%
+  mutate(ymax_seaweeds = mean_proportion + se_proportion) %>% 
+  mutate(seaweed_color = case_when(seaweed_simple %in% c("Asco_n",
+                                                         "Fucu_spp",
+                                                         "Lami_spp")
+                                                         ~ "Brown",
+                                   seaweed_simple %in% c("Cera_r",
+                                                         "Chon_c",
+                                                         "Cora_o",
+                                                         "Mast_s",
+                                                         "Porp_sp",
+                                                         "Vert_l")
+                                                         ~ "Red",
+                                   seaweed_simple %in% c("Ulva_i",
+                                                         "Ulva_l")
+                                                         ~ "Green",
+                                   TRUE ~ "Black")) %>%
+  mutate(seaweed_color = as.factor(seaweed_color)) %>%
+  mutate(seaweed_color = fct_relevel(seaweed_color, c("Brown", "Red", "Green"))) %>%
+  ggplot(mapping = aes(year, mean_proportion, fill = seaweed_color)) +
+  geom_col(position = "dodge") +
+  scale_x_continuous(breaks = breaks_width(1)) +
+  geom_errorbar(aes(ymin = ymin_seaweeds, ymax = ymax_seaweeds),
+                  width=.3, position = position_dodge(.9)) +
+  scale_fill_manual(values = c("Brown" = "#614428",
+                               "Red" = "#CF594C",
+                               "Green" = "#ABDD8A")) +
+  facet_wrap(. ~seaweed_simple, labeller = labeller(seaweed_simple = seaweed_labs)) +
+  theme(axis.text.x = element_text(size = 7)) +
+  labs(x = "Year",
+       y = "Mean Proportion of Seaweed per Quadrat",
+       title = "Seaweed Cover in the Mount Desert Rock Intertidal",
+       subtitle = "by Year and Species",
+       fill = "Seaweed Color") +
+  theme(axis.title.y = element_text(margin = margin(t = 0, r = 8, b = 0, l = 0))) +
+  theme(axis.title.x = element_text(margin = margin(t = 8, r = 0, b = 0, l = 0))) +
+  theme(strip.text = element_markdown())
+```
