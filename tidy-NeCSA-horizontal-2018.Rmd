@@ -257,51 +257,63 @@ H_seaweeds_2018 <- full_join(H00_2018, H03_2018) %>%
 
 seaweeds_2018 <- full_join(L_seaweeds_2018, M_seaweeds_2018) %>%
   full_join(H_seaweeds_2018) %>%
-  rename(seaweed_species = `Substrata % Cover`,
+  rename(seaweed_simple = `Substrata % Cover`,
          squares_out_of_25 = `# of squares/25`) %>%
   mutate(squares_out_of_25 = case_when(is.na(squares_out_of_25) ~ 0,
                                        TRUE ~ squares_out_of_25),
          proportion = squares_out_of_25/25,
          year = 2018,
          `...3` = NULL) %>%
-  mutate(seaweed_species = case_when(seaweed_species == "Ascophyllum" ~ "Asco_n",
-                                     seaweed_species == "Ceramium" ~ "Cera_r",
-                                     seaweed_species == "Chondrus crispus" ~ "Chon_c",
-                                     seaweed_species == "Coralina oficianalis"~ "Cora_o",
-                                     seaweed_species == "Elachista fucicola" ~ "Elac_f",
-                                     seaweed_species == "Enteromorpha" ~ "Ente_sp",
-                                     seaweed_species == "F. distichus" ~ "Fucu_spp",
-                                     seaweed_species == "F. spiralis" ~ "Fucu_spp",
-                                     seaweed_species == "F. vesiculosus" ~ "Fucu_spp",
-                                     seaweed_species == "Laminaria sp." ~ "Lami_sp",
-                                     seaweed_species == "Mastocarpus" ~ "Mast_s",
-                                     seaweed_species == "Polysiphonia lanosa" ~ "Vert_l",
-                                     seaweed_species == "Porphyra sp." ~ "Porp_sp",
-                                     seaweed_species == "Poryphyra sp." ~ "Porp_sp",
-                                     seaweed_species == "Red algae" ~ "RED",
-                                     seaweed_species == "Spongomorpha" ~ "Spon_sp",
-                                     seaweed_species == "Ulva lactuca" ~ "Ulva_l",
-                                     seaweed_species == "other" ~ "other",
-                                     TRUE ~ seaweed_species
+  mutate(seaweed_simple = case_when(seaweed_simple == "Ascophyllum" ~ "Asco_n",
+                                     seaweed_simple == "Ceramium" ~ "Cera_r",
+                                     seaweed_simple == "Chondrus crispus" ~ "Chon_c",
+                                     seaweed_simple == "Corallina oficianalis"~ "Cora_o",
+                                     seaweed_simple == "Elachista fucicola" ~ "Elac_f",
+                                     seaweed_simple == "Enteromorpha" ~ "Ente_sp",
+                                     seaweed_simple == "F. distichus" ~ "Fucu_spp",
+                                     seaweed_simple == "F. spiralis" ~ "Fucu_spp",
+                                     seaweed_simple == "F. vesiculosus" ~ "Fucu_spp",
+                                     seaweed_simple == "Laminaria sp." ~ "Lami_sp",
+                                     seaweed_simple == "Mastocarpus" ~ "Mast_s",
+                                     seaweed_simple == "Polysiphonia lanosa" ~ "Vert_l",
+                                     seaweed_simple == "Porphyra sp." ~ "Porp_sp",
+                                     seaweed_simple == "Poryphyra sp." ~ "Porp_sp",
+                                     seaweed_simple == "Red algae" ~ "RED",
+                                     seaweed_simple == "Spongomorpha" ~ "Spon_sp",
+                                     seaweed_simple == "Ulva lactuca" ~ "Ulva_l",
+                                     seaweed_simple == "other" ~ "other",
+                                     TRUE ~ seaweed_simple
                                      )) %>%
-  filter(!is.na(seaweed_species))
+  filter(!is.na(seaweed_simple))
 
-#distinct(seaweeds_2018, seaweed_species) %>%
-#  arrange(seaweed_species)
+#distinct(seaweeds_2018, seaweed_simple) %>%
+#  arrange(seaweed_simple)
+
+```
+
+```{r join-and-expand-and-join}
+
+expanded_seaweeds_mdr <- expanded_seaweeds_mdr %>%
+  mutate(seaweed_simple = case_when(grepl("Fucu", seaweed_species) ~ "Fucu_spp",
+                                    TRUE ~ seaweed_species)) %>%
+  mutate(seaweed_simple = gsub("CC", "", seaweed_simple)) %>%
+  mutate(seaweed_simple = gsub("SC", "", seaweed_simple)) %>%
+  mutate(proportion_new = case_when(seaweed_simple == "Ulva_l" & tide_ht == "H" ~ 0,
+                                    TRUE ~ proportion))
 
 seaweeds_mdr <- full_join(expanded_seaweeds_mdr, seaweeds_2018)
 
-# not sure I've done this expand in the right order ->
 
 expanded_seaweeds_mdr_with_2018 <- expand(seaweeds_mdr,
                                           year,
                                           tide_ht,
                                           quadrat_m,
-                                          seaweed_species)%>%
+                                          seaweed_simple)%>%
   left_join(seaweeds_mdr,
-            by = join_by(year, tide_ht, quadrat_m, seaweed_species)) %>%
+            by = join_by(year, tide_ht, quadrat_m, seaweed_simple)) %>%
   mutate(squares_out_of_25 = replace_na(squares_out_of_25, 0)) %>%
-  mutate(proportion = replace_na(proportion, 0))
+  mutate(proportion = replace_na(proportion, 0)) %>%
+  mutate(proportion_new = replace_na(proportion_new, 0))
 
 write_csv(expanded_seaweeds_mdr_with_2018, "C:/Users/Marina/Desktop/Repositories/MDR-NeCSA-2024/data/expanded_seaweeds_mdr_with_2018.csv")
 
