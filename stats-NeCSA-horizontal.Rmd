@@ -20,15 +20,9 @@ vertical_all <- read.csv("data/vertical_all.csv")
 
 expanded_inverts_mdr <- read.csv("data/expanded_inverts_mdr.csv")
 
-expanded_seaweeds_mdr <- read.csv("data/expanded_seaweeds_mdr.csv")
+expanded_seaweeds_mdr_with_2018 <- read.csv("data/expanded_seaweeds_mdr_with_2018.csv")
 
-expanded_seaweeds_mdr <- expanded_seaweeds_mdr %>%
-  mutate(seaweed_simple = case_when(grepl("Fucu", seaweed_species) ~ "Fucu_spp",
-                                    TRUE ~ seaweed_species)) %>%
-  mutate(seaweed_simple = gsub("CC", "", seaweed_simple)) %>%
-  mutate(seaweed_simple = gsub("SC", "", seaweed_simple)) %>%
-  mutate(proportion_new = case_when(seaweed_simple == "Ulva_l" & tide_ht == "H" ~ 0,
-                                    TRUE ~ proportion)) %>%
+expanded_seaweeds_mdr_with_2018 <- expanded_seaweeds_mdr_with_2018 %>%
   group_by(year, tide_ht, quadrat_m, seaweed_simple) %>%
   summarise(sum_proportion = sum(proportion_new)) 
 
@@ -106,7 +100,7 @@ dunnTest(nuce_l$count ~ nuce_l$year, method = "bh")
 
 ```{r kruskal-wallis-dunn-Asco_n}
 
-asco_n <- expanded_seaweeds_mdr %>%
+asco_n <- expanded_seaweeds_mdr_with_2018 %>%
   filter(seaweed_simple == "Asco_n")
 
 kruskal.test(sum_proportion ~ year, data = asco_n)
@@ -120,7 +114,7 @@ kruskal.test(sum_proportion ~ year, data = asco_n)
 
 ```{r kruskal-wallis-dunn-Chon_c}
 
-chon_c <- expanded_seaweeds_mdr %>%
+chon_c <- expanded_seaweeds_mdr_with_2018 %>%
   filter(seaweed_simple == "Chon_c")
 
 kruskal.test(sum_proportion ~ year, data = chon_c)
@@ -133,33 +127,33 @@ kruskal.test(sum_proportion ~ year, data = chon_c)
 
 ```{r kruskal-wallis-dunn-Cora_o}
 
-cora_o <- expanded_seaweeds_mdr %>%
+cora_o <- expanded_seaweeds_mdr_with_2018 %>%
   filter(seaweed_simple == "Cora_o")
 
 kruskal.test(sum_proportion ~ year, data = cora_o)
 
-# dunnTest(cora_o$sum_proportion ~ cora_o$year, method = "bh")
+dunnTest(cora_o$sum_proportion ~ cora_o$year, method = "bh")
 
-# no significant difference (is that true???)
+# significant difference 2017/2019, 2018/2019, 2018/2021
 
 ```
 
 ```{r kruskal-wallis-dunn-Fucu_spp}
 
-fucu_spp <- expanded_seaweeds_mdr %>%
+fucu_spp <- expanded_seaweeds_mdr_with_2018 %>%
   filter(seaweed_simple == "Fucu_spp")
 
 kruskal.test(sum_proportion ~ year, data = fucu_spp)
 
-# dunnTest(fucu_spp$sum_proportion ~ fucu_spp$year, method = "bh")
+dunnTest(fucu_spp$sum_proportion ~ fucu_spp$year, method = "bh")
 
-# no significant difference
+# significant difference 2017/2018, 2018/2019, 2018/2020
 
 ```
 
 ```{r kruskal-wallis-dunn-Mast_s}
 
-mast_s <- expanded_seaweeds_mdr %>%
+mast_s <- expanded_seaweeds_mdr_with_2018 %>%
   filter(seaweed_simple == "Mast_s")
 
 kruskal.test(sum_proportion ~ year, data = mast_s)
@@ -172,7 +166,7 @@ kruskal.test(sum_proportion ~ year, data = mast_s)
 
 ```{r kruskal-wallis-dunn-Ulva_l}
 
-ulva_l <- expanded_seaweeds_mdr %>%
+ulva_l <- expanded_seaweeds_mdr_with_2018 %>%
   filter(seaweed_simple == "Ulva_l")
 
 kruskal.test(sum_proportion ~ year, data = ulva_l)

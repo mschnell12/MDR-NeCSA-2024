@@ -28,6 +28,7 @@ expanded_seaweeds_mdr_with_2018 <- read.csv("data/expanded_seaweeds_mdr_with_201
 ```{r L-mean-seaweed-cover-graph-faceted, fig.height = 4, fig.width = 9}
 
 # include caption that says error bars represent +/- 1 standard error
+# why so little Asco and Fucus in 2018? check to make sure sums are working correctly
 
 seaweed_labs <- c("<i>Ascophyllum nodosum</i>",
                   "<i>Chondrus crispus</i>",
