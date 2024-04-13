@@ -14,7 +14,13 @@ library(tidyverse)
 library(readxl)
 ```
 
-```{r load-data}
+```{r load-previous-data}
+
+expanded_seaweeds_mdr <- read.csv("data/expanded_seaweeds_mdr.csv")
+
+```
+
+```{r load-2018-data}
 
 # not tidying invert data because they didn't identify Littorina snails to species
 
@@ -282,5 +288,21 @@ seaweeds_2018 <- full_join(L_seaweeds_2018, M_seaweeds_2018) %>%
 
 #distinct(seaweeds_2018, seaweed_species) %>%
 #  arrange(seaweed_species)
+
+seaweeds_mdr <- full_join(expanded_seaweeds_mdr, seaweeds_2018)
+
+# not sure I've done this expand in the right order ->
+
+expanded_seaweeds_mdr_with_2018 <- expand(seaweeds_mdr,
+                                          year,
+                                          tide_ht,
+                                          quadrat_m,
+                                          seaweed_species)%>%
+  left_join(seaweeds_mdr,
+            by = join_by(year, tide_ht, quadrat_m, seaweed_species)) %>%
+  mutate(squares_out_of_25 = replace_na(squares_out_of_25, 0)) %>%
+  mutate(proportion = replace_na(proportion, 0))
+
+write_csv(expanded_seaweeds_mdr_with_2018, "C:/Users/Marina/Desktop/Repositories/MDR-NeCSA-2024/data/expanded_seaweeds_mdr_with_2018.csv")
 
 ```
