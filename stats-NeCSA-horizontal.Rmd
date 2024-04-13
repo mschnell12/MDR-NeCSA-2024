@@ -140,7 +140,7 @@ kruskal.test(sum_proportion ~ year, data = cora_o)
 
 # dunnTest(cora_o$sum_proportion ~ cora_o$year, method = "bh")
 
-# no significant difference
+# no significant difference (is that true???)
 
 ```
 

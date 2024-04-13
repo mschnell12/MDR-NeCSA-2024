@@ -1,0 +1,286 @@
+---
+title: "NeCSA Horizontal 2018 (Tidy Data)"
+author: "Marina Schnell"
+date: "2024-04-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load-packages}
+library(tidyverse)
+library(readxl)
+```
+
+```{r load-data}
+
+# not tidying invert data because they didn't identify Littorina snails to species
+
+# low quadrats
+
+L00_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "A12:C28") %>%
+  mutate(tide_ht = "L",
+         quadrat_m = 0,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+L03_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "D12:F28") %>%
+  mutate(tide_ht = "L",
+         quadrat_m = 3,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+L06_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "G12:I28") %>%
+  mutate(tide_ht = "L",
+         quadrat_m = 6,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+L09_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "J12:L28") %>%
+  mutate(tide_ht = "L",
+         quadrat_m = 9,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+L12_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "M12:O28") %>%
+  mutate(tide_ht = "L",
+         quadrat_m = 12,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+L15_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "P12:R28") %>%
+  mutate(tide_ht = "L",
+         quadrat_m = 15,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+L18_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "S12:U28") %>%
+  mutate(tide_ht = "L",
+         quadrat_m = 18,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+L21_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "V12:X28") %>%
+  mutate(tide_ht = "L",
+         quadrat_m = 21,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+L24_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "Y12:AA28") %>%
+  mutate(tide_ht = "L",
+         quadrat_m = 24,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+L27_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "AB12:AD28") %>%
+  mutate(tide_ht = "L",
+         quadrat_m = 27,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+
+# mid quadrats
+
+M00_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Mid", range = "A12:B28") %>%
+  mutate(tide_ht = "M",
+         quadrat_m = 0)
+
+M03_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Mid", range = "D12:E28") %>%
+  mutate(tide_ht = "M",
+         quadrat_m = 3)
+
+M06_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Mid", range = "G12:H28") %>%
+  mutate(tide_ht = "M",
+         quadrat_m = 6)
+
+M09_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Mid", range = "J12:K28") %>%
+  mutate(tide_ht = "M",
+         quadrat_m = 9)
+
+M12_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Mid", range = "M12:N28") %>%
+  mutate(tide_ht = "M",
+         quadrat_m = 12)
+
+M15_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Mid", range = "P12:Q28") %>%
+  mutate(tide_ht = "M",
+         quadrat_m = 15)
+
+M18_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Mid", range = "S12:T28") %>%
+  mutate(tide_ht = "M",
+         quadrat_m = 18)
+
+M21_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Mid", range = "V12:W28") %>%
+  mutate(tide_ht = "M",
+         quadrat_m = 21)
+
+M24_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Mid", range = "Y12:Z28") %>%
+  mutate(tide_ht = "M",
+         quadrat_m = 24)
+
+M27_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Mid", range = "AB12:AC28") %>%
+  mutate(tide_ht = "M",
+         quadrat_m = 27)
+
+
+# high quadrats
+
+H00_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "A12:C28") %>%
+  mutate(tide_ht = "H",
+         quadrat_m = 0,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+H03_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "D12:F28") %>%
+  mutate(tide_ht = "H",
+         quadrat_m = 3,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+H06_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "G12:I28") %>%
+  mutate(tide_ht = "H",
+         quadrat_m = 6,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+H09_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "J12:L28") %>%
+  mutate(tide_ht = "H",
+         quadrat_m = 9,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+H12_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "M12:O28") %>%
+  mutate(tide_ht = "H",
+         quadrat_m = 12,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+H15_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "P12:R28") %>%
+  mutate(tide_ht = "H",
+         quadrat_m = 15,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+H18_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "S12:U28") %>%
+  mutate(tide_ht = "H",
+         quadrat_m = 18,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+H21_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "V12:X28") %>%
+  mutate(tide_ht = "H",
+         quadrat_m = 21,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+H24_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "Y12:AA28") %>%
+  mutate(tide_ht = "H",
+         quadrat_m = 24,
+         `# of squares/25` = NULL) %>%
+  rename(`# of squares/25` = 2)
+
+H27_2018 <- read_excel("data/2018_full_NeCSA.xlsx",
+                       sheet = "West HT Low", range = "AB12:AD28") %>%
+  mutate(tide_ht = "H",
+         quadrat_m = 27)
+
+
+```
+
+```{r join-all-seaweeds}
+
+L_seaweeds_2018 <- full_join(L00_2018, L03_2018) %>%
+  full_join(L06_2018) %>%
+  full_join(L09_2018) %>%
+  full_join(L12_2018) %>%
+  full_join(L15_2018) %>%
+  full_join(L18_2018) %>%
+  full_join(L21_2018) %>%
+  full_join(L24_2018) %>%
+  full_join(L27_2018)
+  
+M_seaweeds_2018 <- full_join(M00_2018, M03_2018) %>%
+  full_join(M06_2018) %>%
+  full_join(M09_2018) %>%
+  full_join(M12_2018) %>%
+  full_join(M15_2018) %>%
+  full_join(M18_2018) %>%
+  full_join(M21_2018) %>%
+  full_join(M24_2018) %>%
+  full_join(M27_2018)
+
+H_seaweeds_2018 <- full_join(H00_2018, H03_2018) %>%
+  full_join(H06_2018) %>%
+  full_join(H09_2018) %>%
+  full_join(H12_2018) %>%
+  full_join(H15_2018) %>%
+  full_join(H18_2018) %>%
+  full_join(H21_2018) %>%
+  full_join(H24_2018) %>%
+  full_join(H27_2018)
+
+seaweeds_2018 <- full_join(L_seaweeds_2018, M_seaweeds_2018) %>%
+  full_join(H_seaweeds_2018) %>%
+  rename(seaweed_species = `Substrata % Cover`,
+         squares_out_of_25 = `# of squares/25`) %>%
+  mutate(squares_out_of_25 = case_when(is.na(squares_out_of_25) ~ 0,
+                                       TRUE ~ squares_out_of_25),
+         proportion = squares_out_of_25/25,
+         year = 2018,
+         `...3` = NULL) %>%
+  mutate(seaweed_species = case_when(seaweed_species == "Ascophyllum" ~ "Asco_n",
+                                     seaweed_species == "Ceramium" ~ "Cera_r",
+                                     seaweed_species == "Chondrus crispus" ~ "Chon_c",
+                                     seaweed_species == "Coralina oficianalis"~ "Cora_o",
+                                     seaweed_species == "Elachista fucicola" ~ "Elac_f",
+                                     seaweed_species == "Enteromorpha" ~ "Ente_sp",
+                                     seaweed_species == "F. distichus" ~ "Fucu_spp",
+                                     seaweed_species == "F. spiralis" ~ "Fucu_spp",
+                                     seaweed_species == "F. vesiculosus" ~ "Fucu_spp",
+                                     seaweed_species == "Laminaria sp." ~ "Lami_sp",
+                                     seaweed_species == "Mastocarpus" ~ "Mast_s",
+                                     seaweed_species == "Polysiphonia lanosa" ~ "Vert_l",
+                                     seaweed_species == "Porphyra sp." ~ "Porp_sp",
+                                     seaweed_species == "Poryphyra sp." ~ "Porp_sp",
+                                     seaweed_species == "Red algae" ~ "RED",
+                                     seaweed_species == "Spongomorpha" ~ "Spon_sp",
+                                     seaweed_species == "Ulva lactuca" ~ "Ulva_l",
+                                     seaweed_species == "other" ~ "other",
+                                     TRUE ~ seaweed_species
+                                     )) %>%
+  filter(!is.na(seaweed_species))
+
+#distinct(seaweeds_2018, seaweed_species) %>%
+#  arrange(seaweed_species)
+
+```
